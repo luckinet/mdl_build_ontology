@@ -2618,7 +2618,7 @@ animals <-
 #   bind_rows(animals, .)
 
 animals <-
-  tibble(concept = "cattle", broader = class$concept[28], scientific = "Bos bovis|Bos taurus|Bos indicus|Bos grunniens|Bos gaurus|Bos grontalis|Bos sondaicus",
+  tibble(concept = "cattle", broader = class$concept[28], scientific = "Bos bovis|Bos taurus|Bos indicus|Bos grunniens|Bos gaurus|Bos frontalis|Bos sondaicus",
          icc_id = NA_character_, cpc_id = "02111", wiki_id = "Q830|Q4767951", gbif_id = "2441022|2441023|2441019|2441026",
          purpose = "food|labor", used_part = "meat|dairy|time") %>%
   bind_rows(animals, .)
