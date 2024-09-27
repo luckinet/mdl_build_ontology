@@ -4,34 +4,18 @@
 # license     : https://creativecommons.org/licenses/by-sa/4.0/
 # authors     : Steffen Ehrmann
 # date        : 2024-03-27
-# version     : 0.8.0
-# status      : done (luts), done (gpw)
-# comment     : file.edit(paste0(dir_docs, "/documentation/02_build_ontology.md"))
+# version     : 1.0.0
+# status      : done
+# comment     : file.edit(paste0(dir_docs, "/documentation/mdl_build_ontology.md"))
 # ----
 
-message("\n---- build landuse ontology ----")
-
-dir_onto <- .get_path(module = "onto")
-dir_onto_data <- paste0(dir_onto, "_data/")
-
-path_onto <- paste0(dir_onto_data, "lucki_onto.rds")
-
-# open tasks:
-# - move everything to documentation that is just descriptive
-# - consider documenting other lulc classes: https://docs.google.com/spreadsheets/d/1SX51OilNt-cUYpAa7t0LAvZRTzq3Sd4WJLnX6mWKfQk/edit#gid=1995607081
-# - connect crops to landuse classes by providing the landuse classes as "has_broader_match"
-
-# 1. make paths ----
+# set module-specific paths ----
 #
+path_onto <- paste0(.get_path("onto", "_data"), "lucki_onto.rds")
 
-# 2. load data ----
-#
-
-# 3. data processing ----
-#
-## start a new ontology ----
+# start a new ontology ----
 message(" --> initiate ontology")
-luckiOnto <- start_ontology(name = "lucki_onto", path = dir_onto_data,
+luckiOnto <- start_ontology(name = "lucki_onto", path = .get_path("onto", "_data"),
                             version = "1.0.2",
                             code = ".xx",
                             description = "the LUCKINet commodities",
@@ -39,11 +23,11 @@ luckiOnto <- start_ontology(name = "lucki_onto", path = dir_onto_data,
                             uri_prefix = "http://luckinet.org",
                             license = "CC-BY-4.0")
 
-## define all sources ----
+# define all sources ----
 message(" --> defining sources")
 
 
-# ### corine land cover ----
+# ## corine land cover ----
 # luckiOnto <- new_source(name = "clc",
 #                         date = Sys.Date(),
 #                         description = "CORINE land cover nomenclature",
@@ -118,7 +102,7 @@ message(" --> defining sources")
 #   "523", "Sea and ocean - Zone seaward of the lowest tide limit."
 # )
 #
-# ### esa cci land cover ----
+# ## esa cci land cover ----
 # luckiOnto <- new_source(name = "esalc",
 #                         date = Sys.Date(),
 #                         version = "2.1.1",
@@ -167,7 +151,7 @@ message(" --> defining sources")
 #   "220", "Permanent snow and ice"
 # )
 
-### indicative crop classification ----
+## indicative crop classification ----
 luckiOnto <- new_source(name = "icc",
                         date = Sys.Date(),
                         version = "1.1",
@@ -177,7 +161,7 @@ luckiOnto <- new_source(name = "icc",
                         license = "?",
                         ontology = luckiOnto)
 
-### central product classification ----
+## central product classification ----
 luckiOnto <- new_source(name = "cpc",
                         date = Sys.Date(),
                         version = "2.1",
@@ -187,7 +171,7 @@ luckiOnto <- new_source(name = "cpc",
                         license = "?",
                         ontology = luckiOnto)
 
-### plant and animal species ----
+## plant and animal species ----
 luckiOnto <- new_source(name = "species",
                         date = Sys.Date(),
                         description = "This contains scientific plant and animal names as suggested by the ICC 1.1 in the book WORLD PROGRAMME FOR THE CENSUS OF AGRICULTURE 2020",
@@ -195,7 +179,7 @@ luckiOnto <- new_source(name = "species",
                         license = "?",
                         ontology = luckiOnto)
 
-### wikidata ID ----
+## wikidata ID ----
 luckiOnto <- new_source(name = "wiki",
                         date = Sys.Date(),
                         description = "Wikidata is a free, collaborative, multilingual, secondary database, collecting structured data to provide support for Wikipedia, Wikimedia Commons, the other wikis of the Wikimedia movement, and to anyone in the world.",
@@ -204,7 +188,7 @@ luckiOnto <- new_source(name = "wiki",
                         license = "CC0",
                         ontology = luckiOnto)
 
-### gbif ID ----
+## gbif ID ----
 luckiOnto <- new_source(name = "gbif",
                         date = Sys.Date(),
                         description = "GBIF—the Global Biodiversity Information Facility—is an international network and data infrastructure funded by the world's governments and aimed at providing anyone, anywhere, open access to data about all types of life on Earth.",
@@ -213,7 +197,7 @@ luckiOnto <- new_source(name = "gbif",
                         license = "dataset specific (see occurrence data)",
                         ontology = luckiOnto)
 
-### use-type ----
+## use-type ----
 luckiOnto <- new_source(name = "use-type",
                         date = Sys.Date(),
                         description = "a collection of standard terms of use-types of crops or livestock, derived from the FAO Central Product Classification (CPC) version 2.1",
@@ -238,7 +222,7 @@ useTypes <- tribble(
 )
 
 
-### use-part ----
+## use-part ----
 luckiOnto <- new_source(name = "use-part",
                         date = Sys.Date(),
                         description = "a collection of standard terms of the used parts of crops or livestock, derived from the FAO Central Product Classification (CPC) version 2.1",
@@ -275,7 +259,7 @@ usedParts <- tribble(
   "silk", "where the silk is used."
 )
 
-### life-form ----
+## life-form ----
 luckiOnto <- new_source(name = "life-form",
                         date = Sys.Date(),
                         description = "a collection of standard terms of plant life-forms",
@@ -293,7 +277,7 @@ lifeForms <- tribble(
   "mushroom", "mushrooms."
 )
 
-### persistence ----
+## persistence ----
 luckiOnto <- new_source(name = "persistence",
                         date = Sys.Date(),
                         description = "the number of years a plant needs to grow before it can be harvested the first time.",
@@ -303,7 +287,7 @@ luckiOnto <- new_source(name = "persistence",
 
 lut_persistence <- tibble(label = as.character(c(1:9, 24, 40)), description = NA_character_)
 
-### duration ----
+## duration ----
 luckiOnto <- new_source(name = "duration",
                         date = Sys.Date(),
                         description = "the number of years a plant can be harvested.",
@@ -313,7 +297,7 @@ luckiOnto <- new_source(name = "duration",
 
 lut_duration <- tibble(label = as.character(c(1:10, 25, 40, 50, 80)), description = NA_character_)
 
-### harvests ----
+## harvests ----
 luckiOnto <- new_source(name = "harvests",
                         date = Sys.Date(),
                         description = "the number of harvests that can be taken from a plant per year.",
@@ -329,7 +313,7 @@ lut_harvests <- tribble(
   "often", "plants that are harvested more than three times per year"
 )
 
-### upper height ----
+## upper height ----
 luckiOnto <- new_source(name = "height",
                         date = Sys.Date(),
                         description = "the height classes of plants (expressed as the upper bound)",
@@ -351,7 +335,7 @@ lut_height <- tribble(
   "higher", "plants that are higher than 40 m."
 )
 
-### age range ----
+## age range ----
 luckiOnto <- new_source(name = "age-class",
                         date = Sys.Date(),
                         description = "the range of the typical animal age",
@@ -364,7 +348,7 @@ lut_ages <- tibble(label = c("juvenile", "subadult", "adult"),
                                    "animals that are at the verge of becoming reproductive.",
                                    "animals that are able to reproduce if not castrated."))
 
-### sex ----
+## sex ----
 luckiOnto <- new_source(name = "sex",
                         date = Sys.Date(),
                         description = "the sex of the animal",
@@ -377,7 +361,7 @@ lut_sexes <- tibble(label = c("male", "female"),
                                     "animals that are female"))
 
 
-## define new classes ----
+# define new classes ----
 message(" --> defining classes")
 luckiOnto <- new_class(new = "domain", target = NA_character_,
                        description = "the domain of surface area description.", ontology = luckiOnto) %>%
@@ -398,7 +382,7 @@ luckiOnto <- new_class(new = "domain", target = NA_character_,
   #           description = "terms that describe types of livestock.", ontology = .)
 
 
-## define the harmonized concepts ----
+# define the harmonized concepts ----
 message(" --> defining concepts")
 domain <- tribble(
   ~concept,   ~description,
@@ -411,7 +395,7 @@ luckiOnto <- new_concept(new = domain$concept,
                          class = "domain",
                          ontology = luckiOnto)
 
-### landcover ----
+## landcover ----
 lc <- tribble(
   ~concept, ~description, ~broader,
   "BARE LAND", "Areas covered by rock, sand or bare soil that contain at most sparse life.", domain$concept[1],
@@ -428,7 +412,7 @@ luckiOnto <- new_concept(new = lc$concept,
                          ontology = luckiOnto)
 
 
-### land dynamics ----
+## land dynamics ----
 ld <- tribble(
   ~concept, ~description, ~broader,
   "Managed bare land", "Areas that are bare due to (previous) management.", lc$concept[1],
@@ -450,7 +434,7 @@ luckiOnto <- new_concept(new = ld$concept,
                          ontology = luckiOnto)
 
 
-### landuse ----
+## landuse ----
 lu <- tribble(
   ~concept, ~description, ~broader,
   "Built-up land", "Areas that are assembled and non-productive with structures with various uses such as buildings, roads and rails that exlude primary sector uses.", ld$concept[3],
@@ -481,8 +465,8 @@ luckiOnto <- new_concept(new = lu$concept,
                          class = "use",
                          ontology = luckiOnto)
 
-### crop production systems ----
-#### groups ----
+## crop production systems ----
+### groups ----
 group <- tribble(
   ~concept, ~description, ~broader,
   "NON-FOOD CROPS", "This group comprises plants that are grown primarily for all sort of industrial, non-food related purposes.", domain$concept[2],
@@ -504,7 +488,7 @@ luckiOnto <- new_concept(new = group$concept,
                          class = "group",
                          ontology = luckiOnto)
 
-#### classes ----
+### classes ----
 class <- tribble(
   ~concept, ~description, ~broader,
   "Bioenergy crops", "This class covers plants that are primarily grown for the production of energy.", group$concept[1],
@@ -551,9 +535,9 @@ luckiOnto <- new_concept(new = class$concept,
                          class = "class",
                          ontology = luckiOnto)
 
-#### commodities ----
+### commodities ----
 
-##### Bioenergy crops ----
+#### Bioenergy crops ----
 bioenergy <-
   tibble(concept = "acacia", broader = class$concept[1], scientific = "Acacia spp.",
          icc_id = NA_character_, cpc_id = NA_character_, wiki_id = "Q81666", gbif_id = "2978223",
@@ -629,7 +613,7 @@ luckiOnto <- new_concept(new = bioenergy$concept,
                          ontology = luckiOnto)
 
 
-##### Fibre crops ----
+#### Fibre crops ----
 fibre <-
   tibble(concept = "jute", broader = class$concept[2], scientific = "Corchorus spp.",
          icc_id = "9.02.01.02", cpc_id = "01922.01", wiki_id = "Q107211|Q161489", gbif_id = "3032212",
@@ -711,7 +695,7 @@ luckiOnto <- new_concept(new = fibre$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Rubber crops ----
+#### Rubber crops ----
 rubber <-
   tibble(concept = "natural rubber", broader = class$concept[4], scientific = "Hevea brasiliensis",
          icc_id = "9.04", cpc_id = "01950", wiki_id = "Q131877", gbif_id = "3071171",
@@ -723,7 +707,7 @@ luckiOnto <- new_concept(new = rubber$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Pasture and forage crops ----
+#### Pasture and forage crops ----
 pasture <-
   tibble(concept = "alfalfa", broader = class$concept[5], scientific = "Medicago sativa",
          icc_id = "9.01.01", cpc_id = "01912|01940", wiki_id = "Q156106", gbif_id = "9151957",
@@ -833,7 +817,7 @@ luckiOnto <- new_concept(new = pasture$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Berries ----
+#### Berries ----
 berries <-
   tibble(concept = "blueberry", broader = class$concept[6], scientific = "Vaccinium myrtillus|Vaccinium corymbosum",
          icc_id = "3.04.06", cpc_id = "01355.01", wiki_id = "Q13178", gbif_id = "2882833|2882849",
@@ -923,7 +907,7 @@ luckiOnto <- new_concept(new = berries$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Citrus Fruit ----
+#### Citrus Fruit ----
 citrus <-
   tibble(concept = "bergamot", broader = class$concept[7], scientific = "Citrus bergamia",
          icc_id = "3.02.90", cpc_id = "01329", wiki_id = "Q109196", gbif_id = "6433772",
@@ -991,7 +975,7 @@ luckiOnto <- new_concept(new = citrus$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Grapes ----
+#### Grapes ----
 grapes <-
   tibble(concept = "grape", broader = class$concept[8], scientific = "Vitis vinifera",
          icc_id = "3.03", cpc_id = "01330", wiki_id = "Q10978|Q191019", gbif_id = "5372392",
@@ -1003,7 +987,7 @@ luckiOnto <- new_concept(new = grapes$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Pome Fruit ----
+#### Pome Fruit ----
 pome <-
   tibble(concept = "apple", broader = class$concept[9], scientific = "Malus sylvestris",
          icc_id = "2.05.01", cpc_id = "01341", wiki_id = "Q89|Q15731356", gbif_id = "3001509",
@@ -1050,7 +1034,7 @@ luckiOnto <- new_concept(new = pome$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Stone Fruit ----
+#### Stone Fruit ----
 stone <-
   tibble(concept = "apricot", broader = class$concept[10], scientific = "Prunus armeniaca",
          icc_id = "3.05.02", cpc_id = "01343", wiki_id = "Q37453|Q3733836", gbif_id = "7818643",
@@ -1097,7 +1081,7 @@ luckiOnto <- new_concept(new = stone$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Oleaginous fruits ----
+#### Oleaginous fruits ----
 oleaginous <-
   tibble(concept = "coconut", broader = class$concept[11], scientific = "Cocos nucifera",
          icc_id = "4.04.01|9.02.02.90", cpc_id = "01460|01929.08", wiki_id = "Q3342808", gbif_id = "2735117",
@@ -1123,7 +1107,7 @@ luckiOnto <- new_concept(new = oleaginous$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Tropical and subtropical Fruit ----
+#### Tropical and subtropical Fruit ----
 tropical <-
   tibble(concept = "avocado", broader = class$concept[12], scientific = "Persea americana",
          icc_id = "3.01.01", cpc_id = "01311", wiki_id = "Q961769|Q37153", gbif_id = "3034046",
@@ -1311,7 +1295,7 @@ luckiOnto <- new_concept(new = tropical$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Cereals ----
+#### Cereals ----
 cereals <-
   tibble(concept = "barley", broader = class$concept[13], scientific = "Hordeum vulgare",
          icc_id = "1.05", cpc_id = "0115", wiki_id = "Q11577", gbif_id = "2706056",
@@ -1463,7 +1447,7 @@ luckiOnto <- new_concept(new = cereals$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Leguminous seeds ----
+#### Leguminous seeds ----
 legumes <-
   tibble(concept = "bambara bean", broader = class$concept[14], scientific = "Vigna subterranea",
          icc_id = "7.09", cpc_id = "01708", wiki_id = "Q107357073", gbif_id = "2982714",
@@ -1538,7 +1522,7 @@ luckiOnto <- new_concept(new = legumes$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Treenuts ----
+#### Treenuts ----
 nuts <-
   tibble(concept = "almond", broader = class$concept[15], scientific = "Prunus dulcis",
          icc_id = "3.06.01", cpc_id = "01371", wiki_id = "Q184357|Q15545507", gbif_id = "3022502",
@@ -1620,7 +1604,7 @@ luckiOnto <- new_concept(new = nuts$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Oilseeds ----
+#### Oilseeds ----
 oilseeds <-
   tibble(concept = "castor bean", broader = class$concept[16], scientific = "Ricinus communis",
          icc_id = "4.03.01", cpc_id = "01447", wiki_id = "Q64597240|Q155867", gbif_id = "5380041",
@@ -1758,7 +1742,7 @@ luckiOnto <- new_concept(new = oilseeds$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Stimulant crops ----
+#### Stimulant crops ----
 stimulants <-
   tibble(concept = "tobacco", broader = class$concept[17], scientific = "Nicotiana tabacum",
          icc_id = "9.06", cpc_id = "01970", wiki_id = "Q1566|Q181095", gbif_id = "2928774",
@@ -1798,7 +1782,7 @@ luckiOnto <- new_concept(new = stimulants$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Spice crops ----
+#### Spice crops ----
 spice <-
   tibble(concept = "anise", broader = class$concept[18], scientific = "Pimpinella anisum",
          icc_id = "6.02.01.02", cpc_id = "01654", wiki_id = "Q28692", gbif_id = "5371877",
@@ -1985,7 +1969,7 @@ luckiOnto <- new_concept(new = spice$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Medicinal crops ----
+#### Medicinal crops ----
 medicinal <-
   tibble(concept = "basil", broader = class$concept[19], scientific = "Ocimum basilicum",
          icc_id = "9.03.01.02", cpc_id = "01699", wiki_id = "Q38859|Q65522654", gbif_id = "2927096",
@@ -2039,7 +2023,7 @@ luckiOnto <- new_concept(new = medicinal$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Sugar crops ----
+#### Sugar crops ----
 sugar <-
   tibble(concept = "stevia", broader = class$concept[20], scientific = "Stevia rebaudiana",
          icc_id = "8.9", cpc_id = "01809", wiki_id = "Q312246|Q7213452|Q3644010", gbif_id = "3125557",
@@ -2079,7 +2063,7 @@ luckiOnto <- new_concept(new = sugar$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Fruit-bearing vegetables ----
+#### Fruit-bearing vegetables ----
 fruit_veg <-
   tibble(concept = "cantaloupe", broader = class$concept[21], scientific = "Cucumis melo",
          icc_id = "2.05.02", cpc_id = "01229", wiki_id = "Q61858403|Q477179", gbif_id = "2874570",
@@ -2175,7 +2159,7 @@ luckiOnto <- new_concept(new = fruit_veg$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Leaf or stem vegetables ----
+#### Leaf or stem vegetables ----
 leaf_veg <-
   tibble(concept = "artichoke", broader = class$concept[22], scientific = "Cynara scolymus",
          icc_id = "2.01.01", cpc_id = "01216", wiki_id = "Q23041430", gbif_id = "3112361",
@@ -2306,7 +2290,7 @@ luckiOnto <- new_concept(new = leaf_veg$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Mushrooms and truffles ----
+#### Mushrooms and truffles ----
 mushrooms <-
   tibble(concept = "mushrooms", broader = class$concept[23], scientific = "Agaricus spp.|Pleurotus spp.|Volvariella",
          icc_id = "2.04", cpc_id = "01270", wiki_id = "Q654236", gbif_id = "2518646|2518610|2530192",
@@ -2318,7 +2302,7 @@ luckiOnto <- new_concept(new = mushrooms$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Root vegetables ----
+#### Root vegetables ----
 root_veg <-
   tibble(concept = "carrot", broader = class$concept[24], scientific = "Daucus carota subsp. sativus",
          icc_id = "2.03.01", cpc_id = "01251|01919.07", wiki_id = "Q11678009|Q81", gbif_id = "4271342",
@@ -2499,35 +2483,11 @@ luckiOnto <- new_concept(new = root_veg$concept,
                          class = "crop",
                          ontology = luckiOnto)
 
-##### Animals ----
+#### Animals ----
 animals <-
   tibble(concept = "chicken", broader = class$concept[25], scientific = "",
          icc_id = NA_character_, cpc_id = "02151", wiki_id = "Q780", gbif_id = "5260",
          purpose = "food", used_part = "eggs|meat")
-
-# animals <-
-#   tibble(concept = "chicken-juvenile", broader = class$concept[25]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "chicken-adult", broader = class$concept[25]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "chicken-adult-female", broader = class$concept[25]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "chicken-adult-female-eggs", broader = class$concept[25]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "chicken-adult-male", broader = class$concept[25]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "chicken---meat", broader = class$concept[25]) %>%
-#   bind_rows(animals, .)
 
 animals <-
   tibble(concept = "guinea fowl", broader = class$concept[25], scientific = "Agelastes spp.|Guttera spp.|Numida meleagris",
@@ -2589,127 +2549,11 @@ animals <-
          purpose = "food|labor", used_part = "meat|dairy|time") %>%
   bind_rows(animals, .)
 
-# animals <-
-#   tibble(concept = "buffalo|bison-juvenile", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "buffalo|bison-subadult", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "buffalo|bison-subadult-female", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "buffalo|bison-subadult-male", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "buffalo|bison-adult", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "buffalo|bison-adult-female", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "buffalo|bison-adult-male", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-
 animals <-
   tibble(concept = "cattle", broader = class$concept[28], scientific = "Bos bovis|Bos taurus|Bos indicus|Bos grunniens|Bos gaurus|Bos frontalis|Bos sondaicus",
          icc_id = NA_character_, cpc_id = "02111", wiki_id = "Q830|Q4767951", gbif_id = "2441022|2441023|2441019|2441026",
          purpose = "food|labor", used_part = "meat|dairy|time") %>%
   bind_rows(animals, .)
-
-# animals <-
-#   tibble(concept = "cattle---meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle--female-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle--male-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle---dairy", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-juvenile", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-juvenile-female", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-juvenile-female-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-juvenile-male", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-juvenile-male-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult-female", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult-female-dairy", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult-female-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult-male", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult-male-dairy", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-subadult-male-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-adult", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-adult-female", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-adult-female-dairy", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-adult-female-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-adult-male", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "cattle-adult-male-meat", broader = class$concept[28]) %>%
-#   bind_rows(animals, .)
 
 animals <-
   tibble(concept = "goat", broader = class$concept[29], scientific = "Capra hircus",
@@ -2717,43 +2561,11 @@ animals <-
          purpose = "food|labor", used_part = "meat|dairy|time") %>%
   bind_rows(animals, .)
 
-# animals <-
-#   tibble(concept = "goat-juvenile", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "goat-adult", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "goat-adult-female", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "goat-adult-male", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-
 animals <-
   tibble(concept = "sheep", broader = class$concept[29], scientific = "Ovis aries",
          icc_id = NA_character_, cpc_id = "02122", wiki_id = "Q7368", gbif_id = "2441110",
          purpose = "food|labor", used_part = "meat|dairy|time") %>%
   bind_rows(animals, .)
-
-# animals <-
-#   tibble(concept = "sheep-juvenile", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "sheep-adult", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "sheep-adult-female", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "sheep-adult-male", broader = class$concept[29]) %>%
-#   bind_rows(animals, .)
 
 animals <-
   tibble(concept = "alpaca", broader = class$concept[30], scientific = "Vicugna pacos",
@@ -2796,22 +2608,6 @@ animals <-
          icc_id = NA_character_, cpc_id = "02131", wiki_id = "Q726|Q10758650", gbif_id = "2440886",
          purpose = "food|labor", used_part = "meat|time") %>%
   bind_rows(animals, .)
-
-# animals <-
-#   tibble(concept = "horse-juvenile", broader = class$concept[31]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "horse-adult", broader = class$concept[31]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "horse-adult-female", broader = class$concept[31]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "horse-adult-male", broader = class$concept[31]) %>%
-#   bind_rows(animals, .)
 
 animals <-
   tibble(concept = "mule", broader = class$concept[31], scientific = "Equus africanus asinus × Equus ferus caballus",
@@ -2867,34 +2663,6 @@ animals <-
          purpose = "food", used_part = "meat") %>%
   bind_rows(animals, .)
 
-# animals <-
-#   tibble(concept = "pig-juvenile", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "pig-subadult", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "pig-subadult-female", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "pig-subadult-male", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "pig-adult", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "pig-adult-female", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-#
-# animals <-
-#   tibble(concept = "pig-adult-male", broader = class$concept[33]) %>%
-#   bind_rows(animals, .)
-
 animals <-
   tibble(concept = "beehive", broader = class$concept[34], scientific = "Apis mellifera|Apis dorsata|Apis florea|Apis indica",
          icc_id = NA_character_, cpc_id = "02196", wiki_id = "Q165107", gbif_id = "1341976|1341978|1341974|1341979",
@@ -2936,7 +2704,7 @@ commodity <- bind_rows(bioenergy, fibre, rubber, pasture, berries, citrus, grape
                        leaf_veg, mushrooms, root_veg, animals)
 
 
-## mappings to other ontologies/vocabularies or attributes ----
+# mappings to other ontologies/vocabularies or attributes ----
 message(" --> mappings to other vocabularies")
 
 # clcTemp <- lu %>%
@@ -3024,7 +2792,8 @@ luckiOnto <- new_mapping(new = commodity$height,
                          lut = lut_height,
                          ontology = luckiOnto)
 
-# 4. write output ----
+
+# write output ----
 #
 write_rds(x = luckiOnto, file = path_onto)
 onto_updated <- TRUE

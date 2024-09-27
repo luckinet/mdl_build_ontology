@@ -5,8 +5,8 @@
 # authors     : Steffen Ehrmann
 # date        : 2024-03-27
 # version     : 1.0.0
-# status      : done (luts), done (gpw)
-# comment     : file.edit(paste0(dir_docs, "/documentation/02_build_ontology.md"))
+# status      : done
+# comment     : file.edit(paste0(dir_docs, "/documentation/mdl_build_ontology.md"))
 # ----
 
 message("\n---- build gazetteer for territories ----")
