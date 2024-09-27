@@ -383,7 +383,7 @@ message(" --> defining concepts")
 domain <- tribble(
   ~concept,   ~description,
   "landcover", "surface area described by the predominant landcover in that location.",
-  "landuse", "surface area described by the crops and livestock in that location."
+  "production", "surface area described by the crops and livestock produced in that location."
 )
 
 luckiOnto <- new_concept(new = domain$concept,
