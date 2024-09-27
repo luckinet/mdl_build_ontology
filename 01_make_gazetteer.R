@@ -3,7 +3,7 @@
 # description : This is a script for building the LUCKINet territory gazetteer.
 # license     : https://creativecommons.org/licenses/by-sa/4.0/
 # authors     : Steffen Ehrmann
-# date        : 2024-03-27
+# date        : 2024-09-27
 # version     : 1.0.0
 # status      : done
 # comment     : file.edit(paste0(dir_docs, "/documentation/mdl_build_ontology.md"))
@@ -13,17 +13,17 @@ message("\n---- build gazetteer for territories ----")
 
 # make paths ----
 #
-path_gadm <- paste0(dir_onto_data, "gadm36_levels.gpkg") # paste0(dir_onto_data, "gadm_410-levels.gpkg")
+path_gadm <- paste0(dir_data, "gadm36_levels.gpkg") # paste0(dir_data, "gadm_410-levels.gpkg")
 
 # load data ----
 #
 # unpack the file, if it's not yet unpacked
 if(!testFileExists(path_gadm)){
-  if(!testFileExists(paste0(dir_onto_data, "gadm36_levels_gpkg.zip"))){
-    stop("please store 'gadm36_levels_gpkg.zip' in '", dir_onto_data, "'")
+  if(!testFileExists(paste0(dir_data, "gadm36_levels_gpkg.zip"))){
+    stop("please store 'gadm36_levels_gpkg.zip' in '", dir_data, "'")
   } else {
     message(" --> unpacking GADM basis")
-    unzip(paste0(dir_onto_data, "gadm36_levels_gpkg.zip"), exdir = dir_onto_data)
+    unzip(paste0(dir_data, "gadm36_levels_gpkg.zip"), exdir = dir_data)
   }
 }
 
@@ -31,7 +31,7 @@ gadm <- st_read(dsn = path_gadm, layer = "level0") |>
   st_drop_geometry()
 gadm_layers <- st_layers(dsn = path_gadm)
 
-geoscheme <- read_csv2(file = paste0(dir_onto_data, "UNSD — Methodology.csv"))
+geoscheme <- read_csv2(file = paste0(dir_data, "UNSD — Methodology.csv"))
 
 # 3. data processing ----
 #

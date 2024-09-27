@@ -3,19 +3,15 @@
 # description : This is a script for building the LUCKINet commodity ontology.
 # license     : https://creativecommons.org/licenses/by-sa/4.0/
 # authors     : Steffen Ehrmann
-# date        : 2024-03-27
+# date        : 2024-09-27
 # version     : 1.0.0
 # status      : done
 # comment     : file.edit(paste0(dir_docs, "/documentation/mdl_build_ontology.md"))
 # ----
 
-# set module-specific paths ----
-#
-path_onto <- paste0(.get_path("onto", "_data"), "lucki_onto.rds")
-
 # start a new ontology ----
 message(" --> initiate ontology")
-luckiOnto <- start_ontology(name = "lucki_onto", path = .get_path("onto", "_data"),
+luckiOnto <- start_ontology(name = "lucki_onto", path = dir_data,
                             version = "1.0.2",
                             code = ".xx",
                             description = "the LUCKINet commodities",
