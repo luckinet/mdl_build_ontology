@@ -1,16 +1,14 @@
-# description
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7228853.svg)](https://doi.org/10.5281/zenodo.7228853) [![CC-By license](https://img.shields.io/badge/License-CC--BY-blue.svg)](https://creativecommons.org/licenses/by/4.0) [![Website https://geokur-dmp2.geo.tu-dresden.de/Skosmos/skosmos/en/](https://img.shields.io/website-up-down-green-red/http/monip.org.svg)](https://geokur-dmp2.geo.tu-dresden.de/Skosmos/skosmos/en/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7228853.svg)](https://doi.org/10.5281/zenodo.7228853) [![CC-By license](https://img.shields.io/badge/License-CC--BY-blue.svg)](https://creativecommons.org/licenses/by/4.0)
 
 # 1. Rationale
 
-The LUCKINet land use ontology expands AGROVOC (<https://agrovoc.fao.org/browse/agrovoc/en/>), which was developed by the Food and Agriculture Organization of the United Nations (FAO). Like AGROVOC, the LUCKINet land use ontology uses semantic web technology powered by the [Simple Knowledge Organization System](https://www.w3.org/TR/skos-primer/) (SKOS).
+The LUCKINet land use ontology expands AGROVOC (<https://agrovoc.fao.org/browse/agrovoc/en/>), developed by the Food and Agriculture Organization of the United Nations (FAO). Like AGROVOC, the LUCKINet land use ontology uses semantic web technology powered by the [Simple Knowledge Organization System](https://www.w3.org/TR/skos-primer/) (SKOS).
 
-The ontology has been primarily developed to support the LUCKINet effort to standardize approaches that develop gridded information on land use dynamics. As standards develop from the needs of various stakeholders, we have designed this ontology in a way that it can grow organically with emerging use-cases. The focal unit is the crop or livestock species, which makes it easy to align our ontology with other vocabularies and typologies. The ontology is distinguished into two main sections, landcover and land-use concepts.
+The ontology has been primarily developed to support the LUCKINet effort to standardize approaches that develop gridded information on land use dynamics. As standards develop from the needs of various stakeholders, we have designed this ontology in a way that it can grow organically with emerging use cases. The focal unit is the crop or livestock species, which makes it easy to align our ontology with other vocabularies and typologies. The ontology is distinguished into two main sections: landcover and land-use concepts.
 
-We built the ontology with a strong focus on mapping land-use concepts to FAO/AGROVOC concepts to foster interoperability with the wealth of other projects building on AGROVOC. Moreover, concepts from different state-of-the-art datasets are considered, for example, on land use from statistical agencies worldwide and the (grey) literature.
+We built the ontology with a strong focus on mapping land-use concepts to FAO/AGROVOC concepts to foster interoperability with the wealth of other projects building on AGROVOC. Moreover, concepts from different state-of-the-art datasets, such as land use from statistical agencies worldwide and the (grey) literature, are considered.
 
-You will find landcover concepts in this ontology in an unfamiliar way. In many projects, landcover is an amalgamation of concepts across various functional types of concepts. For example *cropland* is often regarded as a landcover, but because it also includes human activities managing that cover, it is not a pure *cover*, but also a *use* type. We therefore revised the former version of this ontology, which was heavily centred on the [CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) classification to be more consistent from a semantic point of view. The ontology is now distinguished into land cover, dynamic and use. *Cover* is characterized purely by the material or entities that cover the surface, *dynamics* are characterized by the most dominant process (such as management or productiveness) and *use* is characterized by how the sphere covering the surface is managed and what of it is used.
+You will find landcover concepts in this ontology in an unfamiliar way. In many projects, landcover is an amalgamation of concepts across various functional types of concepts. For example, *cropland* is often regarded as a landcover, but because it also includes human activities managing that cover, it is not a pure *cover* but also a *use* type. We, therefore, revised the former version of this ontology, which was heavily centred on the [CORINE Land Cover](https://land.copernicus.eu/pan-european/corine-land-cover) classification, to be more consistent from a semantic point of view. The ontology is now distinguished into land cover, dynamic and use. *Cover* is characterized purely by the material or entities  covering the surface, *dynamics* are characterized by the most dominant process (such as management or productiveness), and *use* is characterized by how the sphere covering the surface is managed and what is used.
 
 # 2. Method
 
@@ -48,11 +46,11 @@ The ontology is hierarchically structured into the following classes:
 -   land use: surface area described by mutually exclusive types of how land covered by a particular type and dynamic is used.
 -   group: broad groups of concepts that describe crops and livestock.
 -   class: mutually exclusive types of concepts that describe crops and livestock.
--   crop/animal: individual commodities (typically at the level of species).
+-   crop/animal: individual commodities (typically at species level).
 
 ## 2.3 Concepts
 
-The bulk of the ontology consists of a collection of concepts, where each concept is an instance of a specific class. The concepts also bear hierarchical relations determined by their class affiliation. For example, the concept of *Cultivated grazingland* (class: use) is semantically narrower than *Managed vegetation* (class: dynmic), which in turn is narrower than the concept of *VEGETATED LAND* (class: lancover), which is narrower than *landcover* (class: domain).
+The bulk of the ontology consists of a collection of concepts, each an instance of a specific class. The concepts also bear hierarchical relations determined by their class affiliation. For example, the concept of *Cultivated grazingland* (class: use) is semantically narrower than *Managed vegetation* (class: dynmic), which in turn is narrower than the concept of *VEGETATED LAND* (class: lancover), which is narrower than *landcover* (class: domain).
 
 ## 2.4 Mappings
 
@@ -70,10 +68,11 @@ As far as possible, concepts are mapped to all corresponding wikidata and GBIF c
 
 # 4. Version changes
 
--   uses new version of `ontologics`
+-   uses a new version of `ontologics`
 -   revised hierarchy of landcover concepts
 -   includes livestock concepts
 -   no mapping to "persistence" concepts anymore, instead years-before-harvest (YBH) and years-of-harvest (YOH) are introduced.
+-   various rare species are now included
 
 # 5. Acknowledgements
 
