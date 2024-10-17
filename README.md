@@ -33,4 +33,8 @@ The ontology and the gazetteer are both built with the R-package [`ontologics`](
 
 The ontology and the gazetteer are both stored as `*.rds` files, which makes it easy to use them in our R-based modelling pipeline.
 
+## Change-Log
+
+Please find a documentation of recent changes [here](LOG.md)
+
 ## Acknowledgements
