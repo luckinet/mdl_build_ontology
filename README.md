@@ -35,6 +35,6 @@ The ontology and the gazetteer are both stored as `*.rds` files, which makes it 
 
 ## Change-Log
 
-Please find a documentation of recent changes [here](LOG.md)
+Please find a documentation of recent changes [here](LOG.md).
 
 ## Acknowledgements
