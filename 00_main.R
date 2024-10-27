@@ -13,7 +13,7 @@
 #
 dir_data <- .get_path("onto",  "_data")
 path_onto <- paste0(dir_data, "lucki_onto.rds")
-
+path_gaz <- paste0(dir_data, "lucki_gazetteer.rds")
 
 # run scripts ----
 #
