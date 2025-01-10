@@ -391,6 +391,7 @@ luckiOnto <- new_concept(new = domain$concept,
                          class = "domain",
                          ontology = luckiOnto)
 
+
 ## landcover ----
 lc <- tribble(
   ~concept, ~description, ~broader,

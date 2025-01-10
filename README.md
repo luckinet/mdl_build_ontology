@@ -17,7 +17,7 @@ The ontology is based on:
 
 Crop and livestock species are identified further by the [GBIF](https://www.gbif.org/) species codes and their [wikidata](https://www.wikidata.org/) ID.
 
-The gazetteer is simply based on the hierarchical territory names that are recorded in the GADM dataset.
+The gazetteer is simply based on the hierarchical territory names that are recorded in the GADM 4.1 dataset.
 
 ## Methods
 
