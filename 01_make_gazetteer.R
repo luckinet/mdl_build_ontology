@@ -191,7 +191,9 @@ for(i in 1:6){
     }
     temp <- temp |>
       unite(col = "previous_label", sort(str_subset(colnames(temp), "^NAME_"))[1:(i-1)], sep = ".", na.rm = TRUE, remove = FALSE) |>
+      group_by(!!sym(prevLabel)) |>
       distinct(!!sym(thisLabel), .keep_all = TRUE) |>
+      ungroup() |>
       filter(!is.na(!!sym(paste0("GID_", i-1))))
 
     if(i == 2) {
@@ -213,7 +215,7 @@ for(i in 1:6){
     filter(!is.na(id))
 
   # assign the new concepts into the ontology
-  gazetteer <- new_mapping(new = thisLabel,
+  gazetteer <- new_mapping(new = if_else(i == 1, "COUNTRY", thisLabel),
                            target = tibble(label = paste0("ADM", i-1)),
                            source = "gadm", match = "close", certainty = 3,
                            type = "class", ontology = gazetteer)
@@ -222,6 +224,13 @@ for(i in 1:6){
                            broader = items |> select(id, label, class),
                            class = paste0("ADM", i-1),
                            ontology =  gazetteer)
+
+  gazetteer <- new_mapping(new = items |> pull({{thisLabel}}),
+                           target = left_join(items |> select(label = {{thisLabel}}, has_broader = id),
+                                              get_concept(label = items |> pull({{thisLabel}}), has_broader = items$id, class = paste0("ADM", i-1), ontology = gazetteer),
+                                              by = c("label", "has_broader")),
+                           source = "gadm", match = "close", certainty = 3,
+                           type = "concept", ontology = gazetteer)
 
   if(any(!is.na(items$alt))){
 
