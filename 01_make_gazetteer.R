@@ -143,8 +143,10 @@ for(i in 6:1){
   if(i == 6){
     gadm_full <- new
   } else {
+    new <- new |>
+      filter(!(!!sym(paste0("GID_", i-1)) %in% unique(gadm_full[[paste0("GID_", i-1)]])))
     gadm_full <- gadm_full |>
-      bind_rows(new |> filter(!GID_0 %in% unique(gadm_full$GID_0)))
+      bind_rows(new)
   }
 
 }
