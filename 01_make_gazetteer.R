@@ -13,20 +13,19 @@ message("\n---- build gazetteer for territories ----")
 
 # make paths ----
 #
-ontoDir <- .get_path("onto", "_data")
-path_gadm <- paste0(ontoDir, "gadm_410-levels.gpkg")
-path_gadm_zip <- paste0(ontoDir, "gadm_410-levels.zip")
-path_geoschemeToGADM <- paste0(ontoDir, "geoscheme_to_gadm.rds")
+path_gadm <- paste0(.get_path("onto", "_data"), "gadm_410-levels.gpkg")
+path_gadm_zip <- paste0(.get_path("onto", "_data"), "gadm_410-levels.zip")
+path_geoschemeToGADM <- paste0(.get_path("onto", "_data"), "geoscheme_to_gadm.rds")
 
 # load data ----
 #
 # unpack the file, if it's not yet unpacked
 if(!testFileExists(path_gadm)){
   if(!testFileExists(path_gadm_zip)){
-    stop("please store the GADM dataset in '", ontoDir, "'")
+    stop("please store the GADM dataset in '", .get_path("onto", "_data"), "'")
   } else {
     message(" --> unpacking GADM basis")
-    unzip(path_gadm_zip, exdir = ontoDir)
+    unzip(path_gadm_zip, exdir = .get_path("onto", "_data"))
   }
 }
 
@@ -34,7 +33,7 @@ gadm <- st_read(dsn = path_gadm, layer = "ADM_0") |>
   st_drop_geometry()
 gadm_layers <- st_layers(dsn = path_gadm)
 
-geoscheme <- read_csv2(file = paste0(ontoDir, "UNSD — Methodology.csv"))
+geoscheme <- read_csv2(file = paste0(.get_path("onto", "_data"), "UNSD — Methodology.csv"))
 
 # 3. data processing ----
 #

@@ -1,3 +1,7 @@
+# 2025-01-20
+
+- smaller changes to some scripts
+
 # 2024-10-17
 
 - edit readme to include not only the ontology, but also the gazetteer and to be more general.
