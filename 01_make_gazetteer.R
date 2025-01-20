@@ -54,9 +54,50 @@ temp_geoseries <- geoscheme |>
   filter(!is.na(un_region)) |>  # this filters out only Antarctica
   bind_rows(other)
 
-# ... then, start a new ontology
+message(" --> clean and reshape GADM")
+for(i in 6:1){
+
+  message("     ADM ", i-1)
+
+  new <- st_read(dsn = path_gadm, layer = gadm_layers$name[i]) |>
+    st_drop_geometry() |>
+    as_tibble() |>
+    # remove empty spaces and dots
+    mutate(across(all_of(contains("NAME_")),
+                  function(x){
+                    temp <- trimws(x)
+                    str_replace_all(string = temp, pattern = "[.]", replacement = "")
+                  })) |>
+    # remove water bodies
+    filter(if_any(ends_with(paste0("ENGTYPE_", i-1)), ~ !str_detect(string = .x, pattern = "Water body|Water Body|Waterbody"))) |>
+    filter(if_all(ends_with(paste0("TYPE_", i-1)), ~ !str_detect(string = .x, pattern = "Water body|Water Body|Waterbody"))) |>
+    # make NAs explicit
+    mutate(across(everything(), ~na_if(x = ., y = "NA")))
+
+  if(i == 6){
+    gadm_full <- new
+  } else {
+    new <- new |>
+      filter(!(!!sym(paste0("GID_", i-1)) %in% unique(gadm_full[[paste0("GID_", i-1)]])))
+    gadm_full <- gadm_full |>
+      bind_rows(new)
+  }
+
+}
+
+gadm_full <- gadm_full |>
+  rename(NAME_0 = COUNTRY) |>
+  select(GID_0, NAME_0, ends_with("_1"), ends_with("_2"), ends_with("_3"), ends_with("_4"), ends_with("_5")) |>
+  arrange(NAME_0, NAME_1, NAME_2, NAME_3, NAME_4, NAME_5) |>
+  filter(!is.na(GID_0)) |>
+  full_join(temp_geoseries, by = c("GID_0" = "iso_a3")) |>
+  filter(!is.na(unit)) |>
+  mutate(NAME_0 = unit)
+
+
+# start a new ontology
 message(" --> initiate gazetteer")
-gazetteer <- start_ontology(name = "lucki_gazetteer", path = dir_data,
+gazetteer <- start_ontology(name = "lucki_gazetteer", path = .get_path("onto", "_data"),
                             version = "1.0.0",
                             code = ".xxx",
                             description = "the intial LUCKINet gazetteer",
@@ -118,46 +159,6 @@ gazetteer <- new_concept(new = tempConcepts$concept,
                          broader = tempConcepts,
                          class = "un_subregion",
                          ontology =  gazetteer)
-
-message(" --> clean and reshape GADM")
-for(i in 6:1){
-
-  message("     ADM ", i-1)
-
-  new <- st_read(dsn = path_gadm, layer = gadm_layers$name[i]) |>
-    st_drop_geometry() |>
-    as_tibble() |>
-    # remove empty spaces and dots
-    mutate(across(all_of(contains("NAME_")),
-                  function(x){
-                    temp <- trimws(x)
-                    str_replace_all(string = temp, pattern = "[.]", replacement = "")
-                  })) |>
-    # remove water bodies
-    filter(if_any(ends_with(paste0("ENGTYPE_", i-1)), ~ !str_detect(string = .x, pattern = "Water body|Water Body|Waterbody"))) |>
-    filter(if_all(ends_with(paste0("TYPE_", i-1)), ~ !str_detect(string = .x, pattern = "Water body|Water Body|Waterbody"))) |>
-    # make NAs explicit
-    mutate(across(everything(), ~na_if(x = ., y = "NA")))
-
-  if(i == 6){
-    gadm_full <- new
-  } else {
-    new <- new |>
-      filter(!(!!sym(paste0("GID_", i-1)) %in% unique(gadm_full[[paste0("GID_", i-1)]])))
-    gadm_full <- gadm_full |>
-      bind_rows(new)
-  }
-
-}
-
-gadm_full <- gadm_full |>
-  rename(NAME_0 = COUNTRY) |>
-  select(GID_0, NAME_0, ends_with("_1"), ends_with("_2"), ends_with("_3"), ends_with("_4"), ends_with("_5")) |>
-  arrange(NAME_0, NAME_1, NAME_2, NAME_3, NAME_4, NAME_5) |>
-  filter(!is.na(GID_0)) |>
-  full_join(temp_geoseries, by = c("GID_0" = "iso_a3")) |>
-  filter(!is.na(unit)) |>
-  mutate(NAME_0 = if_else(is.na(NAME_0), unit, NAME_0))
 
 
 message(" --> filling gazetteer")
