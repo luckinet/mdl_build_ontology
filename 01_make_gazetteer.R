@@ -42,8 +42,9 @@ other <- tibble(un_region = c("Asia", "Europe", "Asia"),
 
 # first, build the UN geoscheme ...
 temp_geo <- geoscheme |>
+  mutate(unit = str_squish(str_remove(`Country or Area`, pattern = "\\((.*?)\\)"))) |>
   mutate(un_subregion = if_else(!is.na(`Intermediate Region Name`), `Intermediate Region Name`, `Sub-region Name`)) |>
-  select(unit = `Country or Area`,
+  select(unit,
          un_region = `Region Name`,
          un_subregion,
          m49 = `M49 Code`,
@@ -177,7 +178,7 @@ for(i in 1:6){
   # create a new mapping to the current class
   gazetteer <- new_mapping(new = thisLabel,
                            target = tibble(label = paste0("ADM", i-1)),
-                           source = "gadm", match = "exact", certainty = 3,
+                           source = if_else(i == 1, "unsd", "gadm"), match = "exact", certainty = 3,
                            type = "class", ontology = gazetteer)
 
   # assign the new concepts into the ontology
